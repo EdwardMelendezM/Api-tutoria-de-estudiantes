@@ -1,8 +1,8 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
+import { login, register } from "../controllers/users";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("Aqui en tu corazon bb");
-});
+router.post("/login", login);
+router.post("/register", register);
 export { router };
