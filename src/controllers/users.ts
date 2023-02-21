@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { loginUser, registerUsuario } from "../services/users";
 import { handleHttp } from "../utils/error.handle";
+import { generateToken } from "../utils/jwt.handle";
 
 const login = async (req: Request, res: Response) => {
   try {
@@ -9,10 +10,11 @@ const login = async (req: Request, res: Response) => {
     if (response === "ERROR_EMAIL" || response === "ERROR_PASSWORD") {
       handleHttp(res, response);
     } else {
-      res.send(response);
+      const token = await generateToken(response);
+      res.send({ token, response });
     }
   } catch (error) {
-    handleHttp(res, "LOGIN_USER");
+    handleHttp(res, "ERROR_LOGIN_USER");
   }
 };
 
