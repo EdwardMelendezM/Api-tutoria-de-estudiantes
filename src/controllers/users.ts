@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { loginUser, registerUsuario } from "../services/users";
+import { RequestExt } from "../interfaces/requestExtend.interface";
+import { loginUser, registerUsuario, updatePassword } from "../services/users";
 import { handleHttp } from "../utils/error.handle";
 import { generateToken } from "../utils/jwt.handle";
 
@@ -28,4 +29,14 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-export { login, register };
+const updatePass = async (req: RequestExt, res: Response) => {
+  try {
+    const data = req.body;
+    const response = await updatePassword(data);
+
+    res.send(response);
+  } catch (error) {
+    handleHttp(res, "ERROR_UPDATE_PASSWORD");
+  }
+};
+export { login, register, updatePass };

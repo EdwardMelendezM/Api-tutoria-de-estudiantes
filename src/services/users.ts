@@ -22,4 +22,32 @@ const loginUser = async (data: Users) => {
   return dataUser;
 };
 
-export { registerUsuario, loginUser };
+const updatePassword = async (data: any) => {
+  const { password, newPassword, id } = data;
+  const user = await UserModel.findById(id);
+  if (!user) {
+    return "ERROR_ID_UPDATE_PASS";
+  }
+  const passBoolean = verified(password, user.password);
+  if (!passBoolean) {
+    return "ERROR_PASSWORD_UPDATE_PASS";
+  } else {
+    const passHash = encrypt(newPassword);
+
+    const respuesta = await UserModel.findOneAndUpdate(
+      {
+        _id: user._id,
+      },
+      {
+        $set: {
+          password: passHash,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    return respuesta;
+  }
+};
+export { registerUsuario, loginUser, updatePassword };
