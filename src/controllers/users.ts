@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginUser, registerUsuario } from "../services/users";
+import { loginUser, registerUsuario, updatePassword } from "../services/users";
 import { handleHttp } from "../utils/error.handle";
 import { generateToken } from "../utils/jwt.handle";
 
@@ -28,4 +28,13 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-export { login, register };
+const updatePass = async (req: Request, res: Response) => {
+  try {
+    const user = req.body;
+    const response = await updatePassword(user);
+    res.send(response);
+  } catch (error) {
+    handleHttp(res, "ERROR_UPDATE_PASSWORD");
+  }
+};
+export { login, register, updatePass };
