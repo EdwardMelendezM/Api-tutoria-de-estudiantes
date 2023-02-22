@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { RequestExt } from "../interfaces/requestExtend.interface";
-import { loginUser, registerUsuario, updatePassword } from "../services/users";
+import {
+  loginUser,
+  registerUsuario,
+  updatePassword,
+  updatePhotoUser,
+} from "../services/users";
 import { handleHttp } from "../utils/error.handle";
 import { generateToken } from "../utils/jwt.handle";
 
@@ -23,9 +28,12 @@ const register = async (req: Request, res: Response) => {
   try {
     const data = req.body;
     const response = await registerUsuario(data);
+    if (response === "USER_EXISTS") {
+      throw new Error(response);
+    }
     res.send(response);
   } catch (error) {
-    handleHttp(res, "ERROR_REGISTER");
+    handleHttp(res, "USER_EXISTS", 404);
   }
 };
 
@@ -39,4 +47,13 @@ const updatePass = async (req: RequestExt, res: Response) => {
     handleHttp(res, "ERROR_UPDATE_PASSWORD");
   }
 };
-export { login, register, updatePass };
+
+const updatePhoto = async (req: RequestExt, res: Response) => {
+  try {
+    const respuesta = updatePhotoUser("");
+    res.send(respuesta);
+  } catch (err) {
+    handleHttp(res, "ERROR_UPDATE_PHOTO");
+  }
+};
+export { login, register, updatePass, updatePhoto };

@@ -8,7 +8,7 @@ const registerUsuario = async (data: Users) => {
     const response = await UserModel.create(newdata);
     return response;
   } catch (error) {
-    return "ERROR_REGISTER";
+    return "USER_EXISTS";
   }
 };
 const loginUser = async (data: Users) => {
@@ -50,4 +50,7 @@ const updatePassword = async (data: any) => {
     return respuesta;
   }
 };
-export { registerUsuario, loginUser, updatePassword };
+const updatePhotoUser = async (data: any) => {
+  return "UPDATE_USER";
+};
+export { registerUsuario, loginUser, updatePassword, updatePhotoUser };
