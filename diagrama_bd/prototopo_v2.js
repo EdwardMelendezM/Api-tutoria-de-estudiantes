@@ -44,7 +44,7 @@ const sessionSchema = new mongoose.Schema({
   duration: { type: Number, required: true },
   comment: { type: String },
   meeting: { type: String, required: true },
-  emisor: { type: String, required: true }
+  canceled: { type: Boolean, default: false },
 });
 const SessionModel = mongoose.model('session', sessionSchema);
 
