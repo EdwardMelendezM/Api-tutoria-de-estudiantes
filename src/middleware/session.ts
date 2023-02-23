@@ -7,8 +7,7 @@ const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
   try {
     const jwtByUser = req.headers.authorization || "";
     const jwt = jwtByUser.split(" ").pop();
-    const data = verifyToken(`${jwt}`);
-    console.log(data);
+    const data = verifyToken(`${jwt}`) as { id: string; role: string };
     req.user = data;
     next();
   } catch (error) {

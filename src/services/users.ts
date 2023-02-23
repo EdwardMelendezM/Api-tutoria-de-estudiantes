@@ -51,6 +51,19 @@ const updatePassword = async (id: string, data: any) => {
   }
 };
 const updatePhotoUser = async (data: any) => {
-  return "UPDATE_USER";
+  const respuesta = await UserModel.findOneAndUpdate(
+    {
+      _id: data.id,
+    },
+    {
+      $set: {
+        photo: data.path,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+  return respuesta;
 };
 export { registerUsuario, loginUser, updatePassword, updatePhotoUser };

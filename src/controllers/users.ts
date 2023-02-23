@@ -51,7 +51,16 @@ const updatePass = async (req: RequestExt, res: Response) => {
 
 const updatePhoto = async (req: RequestExt, res: Response) => {
   try {
-    const respuesta = updatePhotoUser("");
+    const { user, file } = req;
+    const updateNewPhoto = {
+      id: `${user?._id}`,
+      path: `${file?.path}`,
+    };
+    console.log(updateNewPhoto);
+
+    const respuesta = await updatePhotoUser(updateNewPhoto);
+    console.log(respuesta);
+
     res.send(respuesta);
   } catch (err) {
     handleHttp(res, "ERROR_UPDATE_PHOTO");
