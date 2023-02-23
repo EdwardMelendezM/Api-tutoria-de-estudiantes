@@ -55,7 +55,6 @@ const updatePassword = async (id: string, data: any) => {
 };
 const updatePhotoUser = async (data: any) => {
   const user = await UserModel.findById(data.id).select("photo");
-  console.log(user);
 
   if (user?.photo !== undefined) {
     fs.unlinkSync(`${user?.photo}`);
