@@ -13,4 +13,12 @@ const validateRegister = [
   },
 ];
 
-export { validateRegister };
+const validateLogin = [
+  check("email").exists().notEmpty().isEmail(),
+  check("password").exists().notEmpty().isLength({ min: 5, max: 15 }),
+  (req: Request, res: Response, next: NextFunction) => {
+    validateResult(req, res, next);
+  },
+];
+
+export { validateRegister, validateLogin };

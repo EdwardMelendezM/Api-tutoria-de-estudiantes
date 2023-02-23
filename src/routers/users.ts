@@ -1,17 +1,16 @@
 import { Router } from "express";
 import { login, register, updatePass, updatePhoto } from "../controllers/users";
 import { checkJwt } from "../middleware/session";
-import { validateRegister } from "../validators/users";
+import { validateLogin, validateRegister } from "../validators/users";
 
 const router = Router();
 
-router.post("/login", login);
+router.post("/login", validateLogin, login);
 router.post("/register", validateRegister, register);
 
 /**
- * Esta ruta solo se puede acceder si esta logeado el user
+ * Estas rutas solo ser accedidas si el usuario esta logeado
  */
-router.put("/api/updatePass", checkJwt, updatePass);
-
-router.put("/api/updatePhoto", checkJwt, updatePhoto);
+router.put("/updatePass/:id", checkJwt, updatePass);
+router.put("/updatePhoto", checkJwt, updatePhoto);
 export { router };

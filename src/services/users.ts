@@ -22,8 +22,8 @@ const loginUser = async (data: Users) => {
   return dataUser;
 };
 
-const updatePassword = async (data: any) => {
-  const { password, newPassword, id } = data;
+const updatePassword = async (id: string, data: any) => {
+  const { password, newPassword } = data;
   const user = await UserModel.findById(id);
   if (!user) {
     return "ERROR_ID_UPDATE_PASS";

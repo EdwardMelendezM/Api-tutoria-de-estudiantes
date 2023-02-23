@@ -39,8 +39,9 @@ const register = async (req: Request, res: Response) => {
 
 const updatePass = async (req: RequestExt, res: Response) => {
   try {
+    const id = req.params.id;
     const data = req.body;
-    const response = await updatePassword(data);
+    const response = await updatePassword(id, data);
 
     res.send(response);
   } catch (error) {
