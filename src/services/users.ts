@@ -1,6 +1,9 @@
 import { Users } from "../interfaces/users.interface";
 import UserModel from "../models/users";
+import fs from "fs";
 import { encrypt, verified } from "../utils/bcrypt.handle";
+
+const MEDIA_PATH = `${__dirname}/../storage/users`;
 
 const registerUsuario = async (data: Users) => {
   try {
@@ -51,6 +54,12 @@ const updatePassword = async (id: string, data: any) => {
   }
 };
 const updatePhotoUser = async (data: any) => {
+  const user = await UserModel.findById(data.id).select("photo");
+  console.log(user);
+
+  if (user?.photo !== undefined) {
+    fs.unlinkSync(`${user?.photo}`);
+  }
   const respuesta = await UserModel.findOneAndUpdate(
     {
       _id: data.id,
@@ -64,6 +73,7 @@ const updatePhotoUser = async (data: any) => {
       new: true,
     }
   );
+
   return respuesta;
 };
 export { registerUsuario, loginUser, updatePassword, updatePhotoUser };
