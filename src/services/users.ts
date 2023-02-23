@@ -1,6 +1,9 @@
 import { Users } from "../interfaces/users.interface";
 import UserModel from "../models/users";
+import fs from "fs";
 import { encrypt, verified } from "../utils/bcrypt.handle";
+
+const MEDIA_PATH = `${__dirname}/../storage/users`;
 
 const registerUsuario = async (data: Users) => {
   try {
@@ -8,7 +11,7 @@ const registerUsuario = async (data: Users) => {
     const response = await UserModel.create(newdata);
     return response;
   } catch (error) {
-    return "ERROR_REGISTER";
+    return "USER_EXISTS";
   }
 };
 const loginUser = async (data: Users) => {
@@ -22,8 +25,8 @@ const loginUser = async (data: Users) => {
   return dataUser;
 };
 
-const updatePassword = async (data: any) => {
-  const { password, newPassword, id } = data;
+const updatePassword = async (id: string, data: any) => {
+  const { password, newPassword } = data;
   const user = await UserModel.findById(id);
   if (!user) {
     return "ERROR_ID_UPDATE_PASS";
@@ -50,4 +53,27 @@ const updatePassword = async (data: any) => {
     return respuesta;
   }
 };
-export { registerUsuario, loginUser, updatePassword };
+const updatePhotoUser = async (data: any) => {
+  const user = await UserModel.findById(data.id).select("photo");
+  console.log(user);
+
+  if (user?.photo !== undefined) {
+    fs.unlinkSync(`${user?.photo}`);
+  }
+  const respuesta = await UserModel.findOneAndUpdate(
+    {
+      _id: data.id,
+    },
+    {
+      $set: {
+        photo: data.path,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  return respuesta;
+};
+export { registerUsuario, loginUser, updatePassword, updatePhotoUser };
