@@ -3,12 +3,11 @@ import UserModel from "../models/users";
 import fs from "fs";
 import { encrypt, verified } from "../utils/bcrypt.handle";
 
-const MEDIA_PATH = `${__dirname}/../storage/users`;
-
 const registerUsuario = async (data: Users) => {
   try {
     const newdata = { ...data, password: encrypt(data.password) };
     const response = await UserModel.create(newdata);
+    response.set("password", undefined, { strict: false });
     return response;
   } catch (error) {
     return "USER_EXISTS";
@@ -22,6 +21,7 @@ const loginUser = async (data: Users) => {
   }
   const passBoolean = verified(password, dataUser.password);
   if (!passBoolean) return "ERROR_PASSWORD";
+  dataUser.set("password", undefined, { strict: false });
   return dataUser;
 };
 

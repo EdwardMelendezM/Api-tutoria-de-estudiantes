@@ -31,7 +31,7 @@ const register = async (req: Request, res: Response) => {
     if (response === "USER_EXISTS") {
       throw new Error(response);
     }
-    res.send(response);
+    res.send({ message: "SUCCESSFUL_CREATED_NEW_USER", state: "OK" });
   } catch (error) {
     handleHttp(res, "USER_EXISTS", 404);
   }
@@ -41,9 +41,9 @@ const updatePass = async (req: RequestExt, res: Response) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const response = await updatePassword(id, data);
+    await updatePassword(id, data);
 
-    res.send(response);
+    res.send({ message: "SUCCESSFUL_UPDATE_PASS", state: "OK" });
   } catch (error) {
     handleHttp(res, "ERROR_UPDATE_PASSWORD");
   }
@@ -57,9 +57,9 @@ const updatePhoto = async (req: RequestExt, res: Response) => {
       path: `${file?.path}`,
     };
 
-    const respuesta = await updatePhotoUser(updateNewPhoto);
+    await updatePhotoUser(updateNewPhoto);
 
-    res.send(respuesta);
+    res.send({ message: "SUCCESSFUL_UPDATE_PHOTO", state: "OK" });
   } catch (err) {
     console.log(err);
 
