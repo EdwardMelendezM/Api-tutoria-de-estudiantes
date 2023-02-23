@@ -3,15 +3,33 @@ const mongoose = require('mongoose');
 // User model
 const UserSchema = new mongoose.Model(
   {
+    name: {
+      type: String,
+    },
     email: {
       type: String,
+      unique: true,
     },
     password: {
       type: String,
     },
     role: {
       type: String,
-      enum: ["admin", "tutor", "student"]
+      enum: ["admin", "tutor", "student"],
+      required: true,
+    },
+    birthdate: {
+      type: Date, required: true
+    },
+    photo: {
+      type: String,
+    },
+    freetime: {
+      day: {
+        type: String,
+        enum: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+      },
+
     }
   },
   {
@@ -21,36 +39,15 @@ const UserSchema = new mongoose.Model(
 )
 const UserModel = mongoose.model("users", UserSchema);
 
-// Student model
-const StudentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  birthdate: { type: Date, required: true },
-  photo: { type: String, },
-  id_user: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }
-});
-
-const StudentModel = mongoose.model('students', StudentSchema);
-
-
-
-// Modelo de Tutor
-const tutorSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  birthdate: { type: Date, required: true },
-  photo: { type: String, },
-});
-
-const TutorModel = mongoose.model('tutors', tutorSchema);
-
 // sesion model
 const sessionSchema = new mongoose.Schema({
-  id_student: { type: mongoose.Schema.Types.ObjectId, ref: 'students', required: true },
-  id_tutor: { type: mongoose.Schema.Types.ObjectId, ref: 'tutors', required: true },
+  id_student: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
+  id_tutor: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
   date: { type: Date, required: true },
   duration: { type: Number, required: true },
   comment: { type: String },
+  meeting: { type: String, required: true },
+  emisor: { type: String, required: true }
 });
 const SessionModel = mongoose.model('session', sessionSchema);
 
@@ -66,7 +63,7 @@ const ReserveModel = mongoose.model('reserve', reserveSchema);
 
 
 
-module.exports = { StudentModel, TutorModel, SessionModel, ReserveModel };
+module.exports = { UserModel, SessionModel, ReserveModel };
 
 
 
