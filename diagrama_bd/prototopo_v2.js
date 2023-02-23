@@ -24,12 +24,9 @@ const UserSchema = new mongoose.Model(
     photo: {
       type: String,
     },
-    freetime: {
-      day: {
-        type: String,
-        enum: ["Mon", "Tue", "Wed", "Thu", "Fri"]
-      },
-
+    freetimeday: {
+      type: String,
+      enum: ["monday", "tuesday", "wednesday", "thursday", "friday"]
     }
   },
   {

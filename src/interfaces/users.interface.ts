@@ -1,8 +1,9 @@
 export interface Users {
   name: string;
   email: string;
-  age: number;
+  birthdate: string;
   photo: string;
   password: string;
   role: string;
+  freetimeday: string;
 }

@@ -8,19 +8,27 @@ const UserSchema = new Schema(
     email: {
       type: String,
       unique: true,
+      required: true,
     },
-    age: {
-      type: Number,
+    birthdate: {
+      type: Date,
     },
     photo: {
       type: String,
+      default: "",
     },
     password: {
       type: String,
+      required: true,
     },
     role: {
       type: String,
-      enum: ["admin", "user", "userPremium"],
+      enum: ["admin", "tutor", "student"],
+      required: true,
+    },
+    freetimeday: {
+      type: Array,
+      default: [],
     },
   },
   {
