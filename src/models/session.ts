@@ -13,11 +13,11 @@ const SessionSchema = new Schema(
       required: true,
     },
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     duration: {
-      type: Number,
+      type: String,
       required: true,
     },
     comment: {
@@ -37,5 +37,5 @@ const SessionSchema = new Schema(
     versionKey: false,
   }
 );
-const SessionModel = model("users", SessionSchema);
+const SessionModel = model("session", SessionSchema);
 export default SessionModel;
