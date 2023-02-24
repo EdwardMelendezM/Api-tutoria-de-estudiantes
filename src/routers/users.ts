@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, register, updatePass, updatePhoto } from "../controllers/users";
 import multerMiddleware from "../middleware/file";
-import { checkJwt } from "../middleware/session";
+import { checkJwt } from "../middleware/jwt";
 import { validateLogin, validateRegister } from "../validators/users";
 
 const router = Router();

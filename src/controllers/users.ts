@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { matchedData } from "express-validator";
 import { RequestExt } from "../interfaces/requestExtend.interface";
 import {
   loginUser,
@@ -26,9 +27,12 @@ const login = async (req: Request, res: Response) => {
 
 const register = async (req: Request, res: Response) => {
   try {
+    const datas = matchedData(req);
+    console.log(datas);
+
     const data = req.body;
     const response = await registerUsuario(data);
-    if (response === "USER_EXISTS") {
+    if (response === "ERROR_NEW_USER") {
       throw new Error(response);
     }
     res.send({ message: "SUCCESSFUL_CREATED_NEW_USER", state: "OK" });
@@ -37,12 +41,17 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-const updatePass = async (req: RequestExt, res: Response) => {
+const updatePass = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    await updatePassword(id, data);
-
+    const response = await updatePassword(id, data);
+    if (
+      response === "ERROR_ID_UPDATE_PASS" ||
+      response === "ERROR_PASSWORD_UPDATE_PASS"
+    ) {
+      throw new Error(response);
+    }
     res.send({ message: "SUCCESSFUL_UPDATE_PASS", state: "OK" });
   } catch (error) {
     handleHttp(res, "ERROR_UPDATE_PASSWORD");

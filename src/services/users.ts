@@ -10,7 +10,7 @@ const registerUsuario = async (data: Users) => {
     response.set("password", undefined, { strict: false });
     return response;
   } catch (error) {
-    return "USER_EXISTS";
+    return "ERROR_NEW_USER";
   }
 };
 const loginUser = async (data: Users) => {
@@ -27,11 +27,14 @@ const loginUser = async (data: Users) => {
 
 const updatePassword = async (id: string, data: any) => {
   const { password, newPassword } = data;
+  console.log(data, id);
+
   const user = await UserModel.findById(id);
   if (!user) {
     return "ERROR_ID_UPDATE_PASS";
   }
   const passBoolean = verified(password, user.password);
+
   if (!passBoolean) {
     return "ERROR_PASSWORD_UPDATE_PASS";
   } else {
@@ -50,14 +53,15 @@ const updatePassword = async (id: string, data: any) => {
         new: true,
       }
     );
+    console.log(respuesta);
+
     return respuesta;
   }
 };
 const updatePhotoUser = async (data: any) => {
   const user = await UserModel.findById(data.id).select("photo");
-  console.log(user);
 
-  if (user?.photo !== undefined) {
+  if (user?.photo !== "") {
     fs.unlinkSync(`${user?.photo}`);
   }
   const respuesta = await UserModel.findOneAndUpdate(
