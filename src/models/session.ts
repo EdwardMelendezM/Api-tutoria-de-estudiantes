@@ -37,5 +37,5 @@ const SessionSchema = new Schema(
     versionKey: false,
   }
 );
-const SessionModel = model("session", SessionSchema);
+const SessionModel = model("sessions", SessionSchema);
 export default SessionModel;

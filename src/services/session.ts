@@ -11,5 +11,45 @@ const getSessionAll = async () => {
     .populate("id_tutor");
   return data;
 };
+const getOneSession = async (id: string) => {
+  const data = await SessionModel.findById(id);
+  return data;
+};
+const updateOneSession = async (id: string, data: Session) => {
+  const dataUpdated = await SessionModel.updateOne(
+    {
+      _id: id,
+    },
+    {
+      ...data,
+    },
+    {
+      new: true,
+    }
+  );
+  return dataUpdated;
+};
+const deleteOneSession = async (id: string) => {
+  const data = await SessionModel.deleteOne({ _id: id });
+  return data;
+};
+const canceledSession = async (id: string) => {
+  const data = await SessionModel.updateOne(
+    {
+      _id: id,
+    },
+    {
+      canceled: true,
+    }
+  );
+  return data;
+};
 
-export { createNewSession, getSessionAll };
+export {
+  createNewSession,
+  getSessionAll,
+  getOneSession,
+  updateOneSession,
+  deleteOneSession,
+  canceledSession,
+};
