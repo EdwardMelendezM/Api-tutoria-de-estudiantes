@@ -5,7 +5,7 @@ const createNewSession = async (data: Session) => {
   const newData = await SessionModel.create(data);
   return newData;
 };
-const getSessionAll = async () => {
+const getAllSession = async () => {
   const data = await SessionModel.find()
     .populate("id_student")
     .populate("id_tutor");
@@ -21,7 +21,9 @@ const updateOneSession = async (id: string, data: Session) => {
       _id: id,
     },
     {
-      ...data,
+      $set: {
+        ...data,
+      },
     },
     {
       new: true,
@@ -47,7 +49,7 @@ const canceledSession = async (id: string) => {
 
 export {
   createNewSession,
-  getSessionAll,
+  getAllSession,
   getOneSession,
   updateOneSession,
   deleteOneSession,
