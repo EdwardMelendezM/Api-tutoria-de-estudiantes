@@ -1,12 +1,19 @@
 import { Request, Response } from "express";
-import { createNewSession, getSessionAll } from "../services/session";
+import {
+  createNewSession,
+  getOneSession,
+  getAllSession,
+  updateOneSession,
+  deleteOneSession,
+  canceledSession,
+} from "../services/session";
 import { handleHttp } from "../utils/error.handle";
 
 const createSession = async (req: Request, res: Response) => {
   try {
-    const data = req.body;
-    const response = await createNewSession(data);
-    res.send({ message: "OK", response });
+    const newData = req.body;
+    const data = await createNewSession(newData);
+    res.send({ message: "OK", data });
   } catch (err) {
     console.log(err);
 
@@ -14,17 +21,56 @@ const createSession = async (req: Request, res: Response) => {
   }
 };
 const getSessions = async (req: Request, res: Response) => {
-  const response = await getSessionAll();
-  res.send({ message: "OK", response });
+  try {
+    const data = await getAllSession();
+    res.send({ message: "OK", data });
+  } catch (err) {
+    handleHttp(res, "ERROR_GET_SESSIONS");
+  }
 };
-const getSession = (req: Request, res: Response) => {
-  res.send({ message: "OK" });
+const getSession = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const data = await getOneSession(id);
+    res.send({ message: "OK", data });
+  } catch (err) {
+    handleHttp(res, "ERROR_GET_SESSIONS");
+  }
 };
-const updateSession = (req: Request, res: Response) => {
-  res.send({ message: "OK" });
+const updateSession = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const newData = req.body;
+    const data = await updateOneSession(id, newData);
+    res.send({ message: "OK", data });
+  } catch (err) {
+    handleHttp(res, "ERROR_UPDATE_SESSION");
+  }
 };
-const deleteSession = (req: Request, res: Response) => {
-  res.send({ message: "OK" });
+const deleteSession = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const data = await deleteOneSession(id);
+    res.send({ message: "OK", data });
+  } catch (err) {
+    handleHttp(res, "ERROR_DELETE_SESSION");
+  }
+};
+const cancelateSession = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const data = await canceledSession(id);
+    res.send({ message: "OK", data });
+  } catch (err) {
+    handleHttp(res, "ERROR_CANCELED_SESSION");
+  }
 };
 
-export { createSession, getSession, getSessions, updateSession, deleteSession };
+export {
+  createSession,
+  getSession,
+  getSessions,
+  updateSession,
+  deleteSession,
+  cancelateSession,
+};

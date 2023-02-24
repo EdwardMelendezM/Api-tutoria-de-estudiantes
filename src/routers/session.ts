@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  cancelateSession,
   createSession,
   deleteSession,
   getSession,
@@ -11,10 +12,11 @@ const router = Router();
 /**
  * Implementacion de reserva de estudiantes para tutoria
  */
-router.get("/", getSessions);
-router.get("/:id", getSession);
-router.post("/", createSession);
-router.put("/:id", updateSession);
-router.delete("/:id", deleteSession);
+router.get("/getsessions/", getSessions);
+router.get("/getsession/:id", getSession);
+router.post("/createsession/", createSession);
+router.put("/update/:id", updateSession);
+router.put("/canceled/:id", cancelateSession);
+router.delete("/delete/:id", deleteSession);
 
 export { router };
